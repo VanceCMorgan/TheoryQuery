@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewData["Title"] = "LandingPage";
+}
+
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="286246037582-ricc5jubljuqm9p52ghnjgf99qfatmns.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div id="ggl" style="display:none" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+<div class="row text-center col-lg-12" style="vertical-align:middle">
+    <div class="col-lg-6 text-center">
+        <a asp-controller="Songmaker" asp-action="Songmaker"><img src="~/img/plus.png" alt="New Song" /><br>New</a>
+    </div>
+    <div class="col-lg-6 text-center">
+        <a style="color:black;" id="openFile"><img src="~/img/fileopen.png" alt="New Song"><br>Open</a>
+    </div>
+
+    <div id="ggl" style="display:none;" class="g-signin2 hide" data-onsuccess="onSignIn" data-theme="dark">ggl</div>
+</div>
+<div style="display:none" class="g-signin2 hide" data-onsuccess="setProvider" data-on data-theme="dark"></div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Composition Search</h2>
+        </div>
+        <div class="modal-body">
+            @Html.TextBox("Search")<input type="submit" id="SearchBtn" value="Search" /><br /><br />
+            <div class="table-wrapper-scroll-y">
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date Created</th>
+                            <th>Notes</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataSearching"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer row">
+            <button class="btn btn-primary col-xs-10" id="CancelModal">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    if (sessionStorage.count) {
+        sessionStorage.count = Number(localStorage.count);
+    } else {
+        sessionStorage.count = 1;
+        }
+        $("#ggl").click();
+        function setProvider(user) {
+                onSignIn(user);
+        }
+        function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+            if (sessionStorage.count == 1) {
+                sessionStorage.count += 1;
+                window.location.href = '@Url.Action("AfterApi", "Profile")?email=' + profile.getEmail() + "&pic=" + profile.getImageUrl();
+
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the buttons that opens and close the modal
+    var btn = document.getElementById("openFile");
+    var btn2 = document.getElementById("CancelModal");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    btn2.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+<script>
+        //call opencomp when trying to load a composition
+        function OpenFile(stringIn) {
+            window.location.href = '@Url.Action("OpenComp", "Songmaker")?compName=' + stringIn;
+        }
+
+
+     // When the user clicks on the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+        var SearchValue = $("#Search").val();
+        var SetData = $("#DataSearching");
+        SetData.html("");
+        $.ajax({
+            type: "post",
+            url: "/Songmaker/GetCompData?SearchValue=" + SearchValue,
+            contentType: "html",
+            success: function (result) {
+                if (result.length == 0) {
+                    SetData.append('<tr style="color:red"><td colspan="3">No Matching Compositions</td></tr>')
+                }
+                else {
+                    $.each(result, function (index, value) {
+                        var message = "asdasd";
+                                var Data = "<tr>" +
+                                    "<td>" + result[index].title + "</td>" +
+                                    "<td>" + result[index].date_Created + "</td>" +
+                                    "<td>" + result[index].notes+ "</td>" +
+                                    "<td><a onclick=OpenFile('"+result[index].title+"')>Open</a></td>" +
+                            "</tr>";
+                        SetData.append(Data);
+                    });
+                }
+            }
+        });
+    }
+</script>

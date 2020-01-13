@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CompositionWithTag>
+@{
+    ViewData["Title"] = "Compositions";
+}
+
+<div>
+    <h2 id="tabletitle">Compositions:<img id="edit" onclick="makeEditable()" /></h2>
+</div>
+<div class="input-group">
+    <form method="post">
+        <input id="filename" name="filename" type="text" class="form-control" placeholder="File Name">
+        <button asp-action="Openfile" type="submit" class="btn btn-primary myformbtn">Open</button>
+        <button asp-action="deleteFile" name="deleteButton" type="submit" class="btn btn-primary myformbtn">Delete</button>
+    </form>
+</div>
+@if(ViewBag.Error!= null){
+    <p class="text-danger">@ViewBag.Error</p>
+}
+
+<table class="table table-striped table-light">
+
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Date Created</th>
+            <th scope="col">Tags</th>
+        </tr>
+    </thead>
+    <tbody id="DataSearching">
+        @foreach (var composition in Model)
+        {
+        <tr>
+            <td>@composition.Title</td>
+            <td>@composition.Date_Created</td>
+            <td>@composition.Tags</td>
+        </tr>
+        }
+    </tbody>
+</table>

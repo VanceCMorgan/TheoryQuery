@@ -1,0 +1,42 @@
+﻿@model IEnumerable<RecordWithTag>
+@{
+    ViewData["Title"] = "Favourites";
+}
+
+<div>
+    <h2 id="tabletitle">Favourites:<img id="edit" onclick="makeEditable()" /></h2>
+</div>
+<div class="input-group">
+        <form method="post">
+            <input id="filename" name="filename" type="text" class="form-control" placeholder="File Name">
+            <button asp-action="removeFavourite" name="removeButton" type="submit" class="btn myformbtn btn-primary">Remove</button>
+        </form>
+</div>
+@if(ViewBag.Error != null){
+    <p class="text-danger">@ViewBag.Error</p>
+}
+<table class="table table-striped table-light">
+
+    <thead>
+        <tr>
+            <th scope="col">Record Name</th>
+            <th scope="col">Tags</th>
+            <th scope="col">Root</th>
+            <th scope="col">Type</th>
+        </tr>
+    </thead>
+    <tbody id="DataSearching">
+        @if(Model.Count() != 0){
+        @foreach (var rwt in Model)
+        {
+            <tr>
+                <td>@rwt.Title</td>
+                <td>@rwt.Tags</td>
+                <td>@rwt.Root</td>
+                <td>@rwt.Type</td>
+            </tr>
+        }
+        }
+
+    </tbody>
+    </table>

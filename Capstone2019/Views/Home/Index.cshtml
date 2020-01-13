@@ -1,0 +1,20 @@
+﻿
+@model IEnumerable<String>
+@{
+    ViewData["Title"] = "Theory Query";
+}
+<body>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <div id="jumbotron" class="jumbotron text-center">
+        <img src="img/theoryQueryLogo.png" class="img-circle logo" alt="Theory Query Logo">
+    </div>
+    <div class="container text-center">
+        @foreach (var item in Model)
+        {
+            <a class="btn btn-primary col-sm-4 login-button" asp-action="SignIn" asp-route-provider="@item">Login with @item</a>
+        }
+    </div>
+
+</body>

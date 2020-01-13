@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "LandingPage";
+}
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="286246037582-ricc5jubljuqm9p52ghnjgf99qfatmns.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div class="row text-center col-12">
+    <a asp-controller="Admin" asp-action="Songmaker" class="col-12"><img src="~/img/plus.png" alt="Songmaker"><br>Songmaker</a>
+
+    <div id="ggl" style="display:none;" class="g-signin2 hide" data-onsuccess="onSignIn" data-theme="dark">ggl</div>
+
+    
+</div>
+@if(ViewBag.Error != null){
+    <h1>@ViewBag.Error</h1>
+}
+
+<script>
+    //simulates another google login to get user info
+    if (sessionStorage.count) {
+        sessionStorage.count = Number(localStorage.count);
+    } else {
+        sessionStorage.count = 1;
+        }
+
+
+        $("#ggl").click();
+        function setProvider(user) {
+                onSignIn(user);
+        }
+        function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+            if (sessionStorage.count == 1) {
+            //call afterapi method to store this info in users db
+            window.location.href = '@Url.Action("AfterApi", "Profile")?email=' + profile.getEmail() + "&pic=" + profile.getImageUrl();
+            sessionStorage.count += 1;
+        }
+    }
+</script>

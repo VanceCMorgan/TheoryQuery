@@ -1,0 +1,96 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1>Admin Profile</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    //controller= profile action == index
+    <h4>@User.Identity.Name</h4>
+    if (ViewBag.Error != null)
+    {
+        <p class="text-danger">@ViewBag.Error</p>
+    }
+}
+<div class="row">
+    <div class="col-md-2" style="border-radius:50%;top:-200px;">
+        <img style="border-radius:50%;top:-200px;max-width:130px;" src="@ViewBag.image" />
+    </div>
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="User_ID" />
+            <div class="form-group">
+                <label asp-for="User_Name" class="control-label">User Name</label>
+                <input asp-for="User_Name" class="form-control" />
+                <span asp-validation-for="User_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="First_Name" class="control-label">First Name</label>
+                <input readonly="readonly" asp-for="First_Name" class="form-control" />
+                <span asp-validation-for="First_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Last_Name" class="control-label">Last Name</label>
+                <input asp-for="Last_Name" class="form-control" />
+                <span asp-validation-for="Last_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email_Address" class="control-label">Email Address</label>
+                <input asp-for="Email_Address" class="form-control" />
+                <span asp-validation-for="Email_Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Last_Sign_In" class="control-label">Last Sign In</label>
+                <input readonly="readonly" asp-for="Last_Sign_In" class="form-control" />
+                <span asp-validation-for="Last_Sign_In" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile_Picture" class="control-label">Profile Picture</label>
+                <input asp-for="Profile_Picture" class="form-control" />
+                <span asp-validation-for="Profile_Picture" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input onclick="return false;" class="form-check-input" asp-for="Is_Admin" /> Is Admin?
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+
+    <div style="position:relative;top:-200px;height:auto;" class="col-md-6 table-wrapper-scroll-y">
+        <img onclick="goToAdmin()" src="~/img/pencil.png" />
+        <table id="usersTable" class="table table-light">
+            <thead>
+                <tr>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Last Sign In</th>
+                    <th>Is Admin?</th>
+                </tr>
+            </thead>
+            <tbody id="DataSearching">
+                @foreach (var user in ViewBag.Users)
+                {
+                    <tr>
+                        <td>@user.User_Name</td>
+                        <td>@user.Email_Address</td>
+                        <td>@user.Last_Sign_In</td>
+                        <td>@user.Is_Admin</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script>
+    function goToAdmin() {
+        window.location.href = '@Url.Action("Index", "Admin")';
+    }
+</script>

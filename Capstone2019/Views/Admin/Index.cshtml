@@ -1,0 +1,146 @@
+﻿@model Capstone2019.Models.User
+@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<h1>Admin Page</h1>
+
+@if (Model != null)
+{
+    if (Model.Is_Admin == true)
+    {
+        <p class="text-success">Ur Good</p>
+    }
+    else
+    {
+        <p class="text-danger">not an admin</p>
+    }
+}
+@if(ViewBag.Error != null)
+{
+    <p class="text-danger">@ViewBag.Error</p>
+}
+<div class="row">
+    <div class="col-sm optionBox bg-light">
+        <h4>New User</h4>
+        <form asp-action="CreateUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="User_Name" class="control-label">User Name</label>
+                <input asp-for="User_Name" class="form-control forma" />
+                <span asp-validation-for="User_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="First_Name" class="control-label">First Name</label>
+                <input asp-for="First_Name" class="form-control forma" />
+                <span asp-validation-for="First_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Last_Name" class="control-label">Last Name</label>
+                <input asp-for="Last_Name" class="form-control forma" />
+                <span asp-validation-for="Last_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email_Address" class="control-label">Email Address</label>
+                <input asp-for="Email_Address" class="form-control forma" />
+                <span asp-validation-for="Email_Address" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input forma" asp-for="Is_Admin " />Is Admin?
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="CreateUser" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+    <div class="col-sm optionBox bg-light">
+        <h4>Existing User</h4>
+        <form asp-action="ExistingUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="User_Name" class="control-label">User Name</label>
+                <input name="User_Name" id="User_Name" asp-for="User_Name" class="form-control formb" />
+                <span asp-validation-for="User_Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input id="editBtn" type="submit" asp-action="ExistingUser" asp-route-choice="3" style="display:none" />
+            </div>
+            <div class="form-group">
+                <input id="editBtn" type="submit" asp-action="ExistingUser" asp-route-choice="1" value="Promote User" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                <input id="editBtn" type="submit" asp-action="ExistingUser" asp-route-choice="2" value="Demote User" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                <input id="editBtn" onclick="return confirm('Are you sure you want to delete this?')" type="submit" asp-action="ExistingUser" asp-route-choice="4" value="Delete" class="btn btn-danger" />
+            </div>
+        </form>
+    </div>
+
+    <div class="col-sm optionBox bg-light">
+        <h4>Add a Record</h4>
+        <form asp-action="AddRecord">
+            <div class="form-group">
+                <label for="Record_Name" class="control-label">Title</label>
+                <input name="Record_Name" id="Record_Name" class="form-control formc" />
+            </div>
+            <div class="form-group">
+                <label for="Tags" class="control-label">Tags</label>
+                <input name="Tags" id="Tags" class="form-control formc" />
+            </div>
+            <div class="form-group">
+                <label for="Root" class="control-label">Root</label>
+                <select name="Root" id="Root" class="form-control formc">
+                    <option value="C">C</option>
+                    <option value="C#">C#</option>
+                    <option value="D">D</option>
+                    <option value="D#">D#</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="F#">F#</option>
+                    <option value="G">G</option>
+                    <option value="G#">G#</option>
+                    <option value="A">A</option>
+                    <option value="A#">A#</option>
+                    <option value="B">B</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Type" class="control-label">Type</label>
+                <select name="Type" id="Type" class="form-control formc">
+                    <option value="S">Scale</option>
+                    <option value="C">Chord</option>
+                    <option value="M">Mode</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Notes_And_Chords" class="control-label">Notes and Chords</label>
+                <input name="Notes_And_Chords" id="Notes_And_Chords" class="form-control formc" />
+            </div>
+            <div class="form-group">
+                <input type="submit" asp-action="AddRecord" value="Add Record" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    //clear fields on click
+    $(document).ready(function () {
+    });
+    $('#createBtn').click(function () {
+        $('.forma').val('');
+    });
+    $('#editBtn').click(function () {
+        $('.formb').val('');
+    });
+    $('#acceptBtn').click(function () {
+        $('.formc').val('');
+    });
+</script>
+

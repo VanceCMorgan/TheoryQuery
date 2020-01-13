@@ -1,0 +1,735 @@
+﻿@using Capstone2019.Models;
+@model IEnumerable<Record>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!--Sound scripts-->
+<script type="text/javascript">
+    //play single note
+    async function play(noteToplay) {
+        console.log(noteToplay);
+        if (noteToplay == "Empty" || noteToplay == "Drag a Note Here") {
+            await sleep(1000);
+        } else {
+            document.getElementById(noteToplay).play();
+        }
+    }
+    //save all notes
+    function saveAll() {
+        var allNotes = [];
+        $('.note').each(async function () {
+            allNotes.push($(this).html());
+        });
+    }
+    //play all notes
+    async function playAll() {
+        var allNotes = [];
+        $('.note').each(async function () {
+            allNotes.push($(this).html());
+        });
+
+        for (var i = 0; i < allNotes.length; i++) {
+            if (allNotes[i] == "Drag a Note Here" || allNotes[i] == "Empty") {
+
+            } else {
+                document.getElementById(allNotes[i]).play();
+
+            }
+            await sleep(1000);
+        }
+
+    }
+    //preview record
+    async function playAllFromPreview(notes) {
+
+
+        for (var i = 0; i < notes.length; i++) {
+            if (notes[i] == "Drag a Note Here" || notes[i] == "Empty") {
+
+            } else {
+                document.getElementById(notes[i]).play();
+
+            }
+            await sleep(1000);
+            document.getElementById(notes[i]).pause();
+
+        }
+    }
+    //sleep between notes ("rest")
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    //delete single note
+    function myDelete(element) {
+        element.empty();
+        element.html("Empty");
+    }
+
+</script>
+
+<audio id="C" src="~/audio/C3.mp3"></audio>
+<audio id="C#" src="~/audio/C#3.mp3"></audio>
+<audio id="D" src="~/audio/D3.mp3"></audio>
+<audio id="D#" src="~/audio/D#3.mp3"></audio>
+<audio id="E" src="~/audio/E3.mp3"></audio>
+<audio id="F" src="~/audio/F3.mp3"></audio>
+<audio id="F#" src="~/audio/F#3.mp3"></audio>
+<audio id="G" src="~/audio/G3.mp3"></audio>
+<audio id="G#" src="~/audio/G#3.mp3"></audio>
+<audio id="A" src="~/audio/A3.mp3"></audio>
+<audio id="A#" src="~/audio/A#3.mp3"></audio>
+<audio id="B" src="~/audio/B3.mp3"></audio>
+
+
+<!--Top of Page-->
+<div class="row">
+    <p class="text-danger">
+        You are currently signed in as an admin. This page is for testing purposes only and you will
+        not be able to save or load compositions
+    </p>
+    <div class="col-sm-12 text-center">
+        <h3 class="text-center" id="Tool_Title">@ViewBag.recTitle</h3>
+        <button id="playBtn" class="btn-success text-center">Preview Record</button>
+        <button id="tagBtn" class="btn-success text-center">Tag Record</button>
+    </div>
+</div>
+<div class="row border-dark">
+    <div class="row col-sm-12">
+        <button style="height:60px;width:180px;" class="btn btn-info" id="Suggestion_Btn">New Suggestion</button>
+        <a id="Accept" style="color:whitesmoke;" class="btn btn-info col-xs-2"><img class="acceptImg" src="~/img/checkmark.png" />Accept Suggestion</a>
+    </div>
+</div>
+
+<!--card deck-->
+<div class="card-deck">
+
+    <a id="lShuffle" style="color:whitesmoke;" class="col-xs bg-dark shuffleBtn"><</a>
+    <div id="mydiv" class="card bg-primary">
+        <div class="card-body text-center">
+            <p class="card-text text1"></p>
+        </div>
+    </div>
+    <div id="myotherdiv" class="card bg-primary">
+        <div class="card-body text-center">
+            <p class="card-text text2"></p>
+        </div>
+    </div>
+    <div id="mythirddiv" class="card bg-primary">
+        <div class="card-body text-center">
+            <p class="card-text text3"></p>
+        </div>
+    </div>
+
+    <a id="rShuffle" style="color:whitesmoke;" class="col-xs bg-dark shuffleBtn">></a>
+</div>
+
+<!--global options-->
+<div class="row">
+
+
+    <div class="col-12 text-center">
+        <h3 id="changeTool">Change Tool</h3>
+    </div>
+    <div class="optRow col-12 text-center row">
+        <div class="col-12" id="playAll" onclick="playAll()"><img src="~/img/play.png" />Play All</div>
+    </div>
+</div>
+
+<!--Notes Set-->
+<div id="Notes" class="container-fluid">
+    <div class="row text-center noterow">
+        <div id="note1" class="col-sm bg-light note" onclick="play($('#note1').html())">Drag a Note Here</div>
+        <div id="note2" class="col-sm bg-light note" onclick="play($('#note2').html())">Drag a Note Here</div>
+        <div id="note3" class="col-sm bg-light note" onclick="play($('#note3').html())">Drag a Note Here</div>
+        <div id="note4" class="col-sm bg-light note" onclick="play($('#note4').html())">Drag a Note Here</div>
+        <div id="note5" class="col-sm bg-light note" onclick="play($('#note5').html())">Drag a Note Here</div>
+        <div id="note6" class="col-sm bg-light note" onclick="play($('#note6').html())">Drag a Note Here</div>
+        <div id="note7" class="col-sm bg-light note" onclick="play($('#note7').html())">Drag a Note Here</div>
+        <div id="note8" class="col-sm bg-light note" onclick="play($('#note8').html())">Drag a Note Here</div>
+    </div>
+</div>
+
+<!--Fill notes if loading-->
+@if (ViewBag.compositionContents != null)
+{
+    <script>
+        $('#note1').html('@ViewBag.compositionContents[0]');
+        $('#note2').html('@ViewBag.compositionContents[1]');
+        $('#note3').html('@ViewBag.compositionContents[2]');
+        $('#note4').html('@ViewBag.compositionContents[3]');
+        $('#note5').html('@ViewBag.compositionContents[4]');
+        $('#note6').html('@ViewBag.compositionContents[5]');
+        $('#note7').html('@ViewBag.compositionContents[6]');
+        $('#note8').html('@ViewBag.compositionContents[7]');
+    </script>
+}
+
+<!--Individual options-->
+<div id="Options" class="container-fluid">
+    <div class="optRow text-center row">
+        <div class="col-sm">
+            <a onclick="play($('#note1').html())"><img src="~/img/play_small.png" /></a>
+            <a onclick="myDelete($('#note1'))"><img src="~/img/delete_small.png" /></a>
+        </div>
+        <div class="col-sm">
+            <a onclick="play($('#note2').html())"><img src="~/img/play_small.png" /></a>
+            <a onclick="myDelete($('#note2'))"><img src="~/img/delete_small.png" /></a>
+        </div>
+        <div class="col-sm">
+            <a onclick="play($('#note3').html())"><img src="~/img/play_small.png" /></a>
+            <a onclick="myDelete($('#note3'))"><img src="~/img/delete_small.png" /></a>
+        </div>
+        <div class="col-sm">
+            <a onclick="play($('#note4').html())"><img src="~/img/play_small.png" /></a>
+            <a onclick="myDelete($('#note4'))"><img src="~/img/delete_small.png" /></a>
+        </div>
+        <div class="col-sm">
+            <a onclick="play($('#note5').html())"><img src="~/img/play_small.png" /></a>
+            <a onclick="myDelete($('#note5'))"><img src="~/img/delete_small.png" /></a>
+        </div>
+        <div class="col-sm">
+            <a onclick="play($('#note6').html())"><img src="~/img/play_small.png" /></a>
+            <a onclick="myDelete($('#note6'))"><img src="~/img/delete_small.png" /></a>
+        </div>
+        <div class="col-sm">
+            <a onclick="play($('#note7').html())"><img src="~/img/play_small.png" /></a>
+            <a onclick="myDelete($('#note7'))"><img src="~/img/delete_small.png" /></a>
+        </div>
+        <div class="col-sm">
+            <a onclick="play($('#note8').html())"><img src="~/img/play_small.png" /></a>
+            <a onclick="myDelete($('#note8'))"><img src="~/img/delete_small.png" /></a>
+        </div>
+    </div>
+</div>
+
+<!-- The First (Searching) Modal -->
+<div id="myModal" class="modal" style="width:100%;">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Record Search</h2>
+        </div>
+        <div class="modal-body">
+            <b>Search By : </b>
+            <select id="SearchBy">
+                <option value="Name">Name</option>
+                <option value="ID">ID</option>
+                <option value="Type">Type</option>
+                <option value="Root">Root</option>
+            </select><br /><br />
+            @Html.TextBox("Search")<input type="submit" id="SearchBtn" value="Search" /><br /><br />
+            <div class="table-wrapper-scroll-y">
+                <table class="table" style="height: 100%;width: 500px;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Notes and Chords</th>
+                            <th>Tags</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataSearching"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer row">
+            <button class="btn btn-primary col-xs-10" id="CancelModal">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- The other (Saving) Modal-->
+<div id="myOtherModal" class="modal">
+
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Save As</h2>
+        </div>
+        <div class="modal-body">
+            <form asp-action="SaveComposition" method="POST" class="form-group">
+                <label for="FileName">FileName: </label>
+                <input name="FileName" id="FileName" type="text"><br>
+                <label for="Tags">Tags: </label>
+                <textarea name="Tags" id="Tags"></textarea>
+                <input class="hide" id="composition" name="comp" />
+                <div class="row col-12">
+                    <button asp-action="SaveComposition" type="submit" class="btn btn-primary col-5">Save</button>
+                    <button class="btn btn-primary col-5" type="button" id="CancelModal">Cancel</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var selectURL = '<%: Url.Action("SelectRec") %>';
+</script>
+<!--Ajax Script-->
+<script>
+    //setup view with initial content
+    $(document).ready(function () {
+        $('#mydiv').removeClass("bg-primary");
+        $('#mydiv').addClass("bg-success");
+        var rec = $("#Tool_Title").text();
+        $.ajax({
+                type: "get",
+                url: "/Admin/startup?record=" + rec,
+                contentType: "html",
+                success: function (result) {
+                    if (result.length == 0) {
+                        SetData.append('<tr style="color:red"><td colspan="3">No Match Data</td></tr>')
+                    }
+                    else {
+                        $(".text1").text(result[0]);
+                        $(".text2").text(result[1]);
+                        $(".text3").text(result[2]);
+                    }
+                }
+        });
+
+        $('#saveButton').click(function () {
+            var stringVersion = [];
+            $('.note').each(function (i,val) {
+                if ($(val).text() == "empty" || $(val).text() == "Drag a Note Here" || !$(val).text()) {
+                    stringVersion.push("");
+                } else {
+                    stringVersion.push($(val).text());
+                }
+            });
+            $('#composition').val(stringVersion);
+        });
+
+        function Open(num) {
+            var res = confirm("Warning! This action will delete your current composition.");
+            if (res==true) {
+                window.location.href = '@Url.Action("SelectRec", "Admin")?id=' + num;
+            }
+        }
+
+        $("#SearchBtn").click(function search() {
+            var SearchBy = $("#SearchBy").val();
+            var SearchValue = $("#Search").val();
+            var SetData = $("#DataSearching");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/Admin/GetSearchingData?SearchBy=" + SearchBy + "&SearchValue=" + SearchValue,
+                contentType: "html",
+                success: function (result) {
+                    if (result.length == 0) {
+                        SetData.append('<tr style="color:red"><td colspan="3">No Match Data</td></tr>')
+                    }
+                    else {
+                        $.each(result[0], function (index, value) {
+                                     var tagsToSet = [];
+                        tagsToSet.push(result[1][0], result[1][1]);
+                            if (typeof tagsToSet[0] !== 'undefined') {
+                                console.log("stillthinks its defined");
+                                for (var i = 0; i < tagsToSet.length; i++) {
+                                    if (result[0][index].record_ID == result[1][i].rec_ID) {
+                                        var Data = "<tr>" +
+                                            "<td>" + result[0][index].record_Name + "</td>" +
+                                            "<td>" + result[0][index].notes_And_Chords + "</td>" +
+                                            "<td>" + result[1][0].tags + "</td>" +
+                                            "<td><a onclick='Open(" + result[0][index].record_ID + ")'>Open</a></td> " +
+                                            "</tr>";
+                                    } else {
+                                        var Data = "<tr>" +
+                                            "<td>" + result[0][index].record_Name + "</td>" +
+                                            "<td>" + result[0][index].notes_And_Chords + "</td>" +
+                                            "<td>" + "" + "</td>" +
+                                            "<td><a onclick='Open(" + result[0][index].record_ID + ")'>Open</a></td> " +
+                                            "</tr>";
+                                    }
+                                }
+                            } else {
+                                for (var i = 0; i < result[0].length; i++) {
+                                    var Data = "<tr>" +
+                                        "<td>" + result[0][index].record_Name + "</td>" +
+                                        "<td>" + result[0][index].notes_And_Chords + "</td>" +
+                                        "<td>" + "" + "</td>" +
+                                        "<td><a onclick='Open(" + result[0][index].record_ID + ")'>Open</a></td> " +
+                                        "</tr>";
+                                }
+                            }
+
+                        SetData.append(Data);
+                        });
+                    }
+                }
+            });
+        });
+
+        $('#playBtn').click(function () {
+            var thisRecord = $("#Tool_Title").text();
+            $.ajax({
+                type: "get",
+                url: "/Admin/PlayRecord?record=" + encodeURIComponent(thisRecord),
+                contentType: "html",
+                success: function (result) {
+                    playAllFromPreview(result);
+                }
+            })
+        });
+
+        $("#lShuffle").click(function () {
+            var thisRecord = $('#Tool_Title').text();
+            $.ajax({
+                type: "get",
+                url: "/Admin/ShuffleLeft?record=" + thisRecord,
+                contentType: "html",
+                success: function (result) {
+                    if (result.length == 0) {
+                        //handle
+                    }
+                    else {
+                            $('.text1').text(result[0]);
+                            $('.text2').text(result[1]);
+                            $('.text3').text(result[2]);
+                    }
+                }
+            })
+
+        $('#Suggestion_Btn').click();
+        });
+
+
+        $("#rShuffle").click(function () {
+            var thisRecord = $('#Tool_Title').text();
+            $.ajax({
+                type: "get",
+                url: "/Admin/ShuffleRight?record=" + thisRecord,
+                contentType: "html",
+                success: function (result) {
+                    if (result.length == 0) {
+                        //handle
+                    }
+                    else {
+                        $.each(result, function (index, value) {
+
+                        });
+
+                        $('.text1').text(result[0]);
+                        $('.text2').text(result[1]);
+                        $('.text3').text(result[2]);
+                    }
+                }
+            });
+
+        $('#Suggestion_Btn').click();
+        });
+
+    });
+</script>
+
+<!--Modal Controls-->
+<script type="text/javascript">
+    // Get the modal
+    var modal = document.getElementById('myModal');
+    var otherModal = document.getElementById('myOtherModal');
+
+    // Get the buttons that opens and close the modal
+    var btn = document.getElementById("changeTool");
+    var btn2 = document.getElementById("CancelModal");
+    var btn3 = document.getElementById('saveButton');
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var span2 = document.getElementsByClassName("close")[1];
+
+    //open a record with id = num
+      function Open(num) {
+            var res = confirm("Warning! This action will delete your current composition.");
+            if (res==true) {
+                window.location.href = '@Url.Action("SelectRec", "Admin")?id=' + num;
+            }
+        }
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+        var SearchBy = $("#SearchBy").val();
+        var SearchValue = $("#Search").val();
+        var SetData = $("#DataSearching");
+        SetData.html("");
+        $.ajax({
+            type: "post",
+            url: "/Admin/GetSearchingData?SearchBy=" + SearchBy + "&SearchValue=" + SearchValue,
+            contentType: "html",
+            success: function (result) {
+                if (result.length == 0) {
+                    SetData.append('<tr style="color:red"><td colspan="3">No Match Data</td></tr>')
+                }
+                else {
+                    $.each(result[0], function (index, value) {
+                        var tagsToSet = [];
+                        tagsToSet.push(result[1][0], result[1][1]);
+                        for (var i = 0; i < tagsToSet.length; i++) {
+                            if (result[0][index].record_ID == result[1][i].rec_ID) {
+                            //append each record with tags
+                                var Data = "<tr>" +
+                                    "<td>" + result[0][index].record_Name + "</td>" +
+                                    "<td>" + result[0][index].notes_And_Chords + "</td>" +
+                                    "<td>" + result[1][0].tags + "</td>" +
+                                    "<td><a onclick='Open(" + result[0][index].record_ID + ")'>Open</a></td> " +
+                                    "</tr>";
+                            } else {
+                                var Data = "<tr>" +
+                                    "<td>" + result[0][index].record_Name + "</td>" +
+                                    "<td>" + result[0][index].notes_And_Chords + "</td>" +
+                                    "<td>" + "" + "</td>" +
+                                    "<td><a onclick='Open(" + result[0][index].record_ID + ")'>Open</a></td> " +
+                                    "</tr>";
+                            }
+                        }
+                        SetData.append(Data);
+                    });
+                }
+            }
+        });
+    }
+
+    //delete all notes
+    $('#deleteButton').click(function () {
+        $('.note').each(async function () {
+            $(this).html("");
+        });
+    });
+
+    //tag the current record
+     $('#tagBtn').click(function () {
+
+        var thisRecord = $("#Tool_Title").text();
+        var tags = window.prompt("Enter Tags: ", "Tags");
+        if (tags!=null||tags!="") {
+        $.ajax({
+                type: "post",
+                url: "/Songmaker/AddTag?record=" + encodeURIComponent(thisRecord) + "&tags=" + tags,
+                contentType: "html",
+                success: function (result) {
+                    playAllFromPreview(result);
+                }
+            })
+        }
+     });
+
+    //accept the current suggestion
+    $('#Accept').click(function () {
+        var empties = [];
+        $('.note').each(async function () {
+            if ($(this).html() == "" ||$(this).html() == "Empty"||$(this).html() == "Drag a Note Here" ) {
+                empties.push($(this));
+            }
+        });
+        if ($('.bg-warning')[0] == null) {
+            empties[0].text($('.bg-success').text());
+        } else {
+            $('.bg-warning').click();
+        }
+        $('#Suggestion_Btn').click();
+    });
+
+    //call for new suggestion
+    $('#Suggestion_Btn').click(function () {
+        var allNotes = [];
+        $('.note').each(async function () {
+            allNotes.push($(this).html());
+        });
+        $.ajax({
+            type: "get",
+            url: "/Admin/Suggestion?comp=" + allNotes,
+            contentType: "html",
+            success: function (result) {
+                if (result.length == 0) {
+                    $('#Suggestion_Btn').val("Error!");
+                }
+                else {
+                    switch (result) {
+                        case 0:
+                             $('#myotherdiv').removeClass("bg-success");
+                            $('#mythirddiv').removeClass("bg-success");
+                            $('#myotherdiv').addClass("bg-primary");
+                            $('#mythirddiv').addClass("bg-primary");
+                            $('#mythirddiv').removeClass("bg-success");
+                            $('#mydiv').addClass("bg-primary");
+                            $('#rShuffle').removeClass("bg-warning");
+                            $('#rShuffle').addClass("bg-dark");
+                            $('#lShuffle').removeClass("bg-dark");
+                            $('#lShuffle').addClass("bg-warning");
+                            break;
+                        case 1:
+                            $('#lShuffle').removeClass("bg-warning");
+                            $('#rShuffle').removeClass("bg-warning");
+                            $('#lShuffle').addClass("bg-dark");
+                            $('#rShuffle').addClass("bg-dark");
+                            $('#myotherdiv').removeClass("bg-success");
+                            $('#mythirddiv').removeClass("bg-success");
+                            $('#myotherdiv').addClass("bg-primary");
+                            $('#mythirddiv').addClass("bg-primary");
+                            $('#mydiv').removeClass("bg-primary");
+                            $('#mydiv').addClass("bg-success");
+                            break;
+                        case 2:
+                            $('#lShuffle').removeClass("bg-warning");
+                            $('#rShuffle').removeClass("bg-warning");
+                            $('#lShuffle').addClass("bg-dark");
+                            $('#rShuffle').addClass("bg-dark");
+                            $('#mydiv').removeClass("bg-success");
+                            $('#mythirddiv').removeClass("bg-success");
+                            $('#mydiv').addClass("bg-primary");
+                            $('#mythirddiv').addClass("bg-primary");
+                            $('#myotherdiv').removeClass("bg-primary");
+                            $('#myotherdiv').addClass("bg-success");
+                            break;
+                        case 3:
+                            $('#lShuffle').removeClass("bg-warning");
+                            $('#rShuffle').removeClass("bg-warning");
+                            $('#lShuffle').addClass("bg-dark");
+                            $('#rShuffle').addClass("bg-dark");
+                            $('#mydiv').removeClass("bg-success");
+                            $('#myotherdiv').removeClass("bg-success");
+                            $('#mydiv').addClass("bg-primary");
+                            $('#myotherdiv').addClass("bg-primary");
+                            $('#mythirddiv').removeClass("bg-primary");
+                            $('#mythirddiv').addClass("bg-success");
+                            break;
+                        case 4:
+                            $('#myotherdiv').removeClass("bg-success");
+                            $('#mythirddiv').removeClass("bg-success");
+                            $('#myotherdiv').addClass("bg-primary");
+                            $('#mythirddiv').addClass("bg-primary");
+                            $('#mythirddiv').removeClass("bg-success");
+                            $('#mydiv').removeClass("bg-success");
+                            $('#mydiv').addClass("bg-primary");
+                            $('#rShuffle').removeClass("bg-dark");
+                            $('#rShuffle').addClass("bg-warning");
+                            $('#lShuffle').removeClass("bg-warning");
+                            $('#lShuffle').addClass("bg-dark");
+                            break;
+                        default:
+                    }
+                }
+            }
+            });
+    });
+
+    //close modals
+    btn2.onclick = function () {
+        modal.style.display = "none";
+        otherModal.style.display = "none";
+    }
+    btn3.onclick = function () {
+        otherModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+        otherModal.style.display = "none";
+    }
+    // When the user clicks on other <span> (x), close the other modal
+    span2.onclick = function () {
+        otherModal.style.display = "none";
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+<!--Misc scripts-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+
+</script>
+
+<!--Dragging Scripts-->
+<script>
+    var note_lefts = [];
+    note_lefts = getNotePositions();
+
+    $('#mydiv').draggable({
+        opacity: 0.7,
+        revert: true,
+        revertDuration: 10,
+        stop: function (event, ui) {
+            checkLocation(event, ui, $('.text1').html());
+        }
+    });
+    $('#myotherdiv').draggable({
+        opacity: 0.7,
+        revert: true,
+        revertDuration: 10,
+        stop: function (event, ui) {
+            ui.position.left = ui.position.left + 145;
+            checkLocation(event, ui, $('.text2').html());
+        }
+    });
+    $('#mythirddiv').draggable({
+        opacity: 0.7,
+        revert: true,
+        revertDuration: 10, stop: function (event, ui) {
+            ui.position.left = ui.position.left + 290;
+            checkLocation(event, ui, $('.text3').html());
+        }
+    });
+    $('.noterow').on('dragover', function () {
+        $('.noterow').attr("border", "2px solid green");
+    });
+    
+    //if drag overnote, fill note with info
+    function checkLocation(event, ui, sentNote) {
+        var top = event.pageY;
+        var left = event.pageX;
+        // Keep the left edge of the element
+        // at least 100 pixels from the container
+        //console.log("Left: " + left);
+        //console.log("Top: " + top);
+        if (top > 430) {
+            if (left > note_lefts[0] && left < note_lefts[1]) {
+                $('#note1').html(sentNote);
+            } else if (left > note_lefts[1] && left < note_lefts[2]) {
+                $('#note2').html(sentNote);
+            } else if (left > note_lefts[2] && left < note_lefts[3]) {
+                $('#note3').html(sentNote);
+            } else if (left > note_lefts[3] && left < note_lefts[4]) {
+                $('#note4').html(sentNote);
+            } else if (left > note_lefts[4] && left < note_lefts[5]) {
+                $('#note5').html(sentNote);
+            } else if (left > note_lefts[5] && left < note_lefts[6]) {
+                $('#note6').html(sentNote);
+            } else if (left > note_lefts[6] && left < note_lefts[7]) {
+                $('#note7').html(sentNote);
+            } else if (left > note_lefts[7]) {
+                $('#note8').html(sentNote);
+            }
+        }
+    }
+    var i = 0;
+    //get positions of each note box
+    function getNotePositions() {
+        note_lefts = [];
+        note_lefts.push($('#note1').position().left);
+        note_lefts.push($('#note2').position().left);
+        note_lefts.push($('#note3').position().left);
+        note_lefts.push($('#note4').position().left);
+        note_lefts.push($('#note5').position().left);
+        note_lefts.push($('#note6').position().left);
+        note_lefts.push($('#note7').position().left);
+        note_lefts.push($('#note8').position().left);
+        return note_lefts;
+    }
+    
+    //recheck locations on resize
+    $(window).resize(function () {
+        getNotePositions();
+    });
+</script>

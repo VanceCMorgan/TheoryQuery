@@ -1,0 +1,249 @@
+*{
+    align-content: center;
+    align-items: center;
+}
+body {
+    min-width: 700px; /* Suppose you want minimum width of 1000px */
+    width: auto !important; /* Firefox will set width as auto */
+    width: 700px;
+}
+.jumbotron{
+    height: 500px;
+}
+.card {
+    height: 180px;
+    display: table-cell;
+    text-align: center;
+    z-index: 5;
+    color: whitesmoke;
+    cursor: move;
+    border-radius: 15px;
+}
+
+.card-text {
+    font-size: 45px;
+    color: whitesmoke;
+}
+
+.note {
+    height: 180px;
+    border: 2px solid blue;
+    border-radius: 15px;
+    margin: 5px;
+    margin-bottom: 10px;
+}
+.logo{
+    max-width: 400px;
+    height:auto;
+}
+.noterow :hover {
+    border: 2px solid green;
+}
+
+.note :hover {
+    border: none;
+}
+.optRow{
+    margin-bottom: 20px;
+}
+
+#mydiv {
+    position: relative;
+}
+#Options{
+    position:relative;
+    left: -10px;
+}
+.myformbtn{
+    margin: 10px;
+    margin-left: 0px;
+}
+.shuffleBtn {
+    height: 100px;
+    border-radius: 15px;
+    color: whitesmoke;
+    font-size: 25px;
+    margin-top: 0px;
+    text-align: center;
+    padding: 25px;
+}
+
+#changeTool {
+    margin: 20px;
+}
+table{
+    width: 100%;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 9; /* Sit on top */
+    left: 0;
+    top: 0px;
+    width: 100%; /* Full width */
+    padding-top: 10%;
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%; /* Could be more or less, depending on screen size */
+}
+a:link {
+    color: black;
+}
+/* unvisited link */
+a:visited {
+    color: black;
+}
+/* visited link */
+a:hover {
+    color: black;
+}
+/* mouse over link */
+a:active {
+    color: black;
+}
+/* selected link */
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+/* Modal Header */
+.modal-header {
+    padding: 2px 16px;
+    background-color: #42b6f4;
+    color: white;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2px 16px;
+    width: 600px;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #42b6f4;
+    color: white;
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    margin-top: -50px;
+    padding: 0;
+    border: 1px solid #888;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+.optionBox{
+    border-radius:25px;
+    position:relative;
+    top:10px;
+    margin:20px;
+    height:700px;
+}
+table{
+    border: 3px solid lightblue;
+}
+#usersTable{
+    position: relative;
+    top:0px;
+
+}
+footer {
+    position: relative;
+}
+.table-wrapper-scroll-y {
+    height: 400px;
+    overflow-y: auto;
+}
+table th {
+    top: 0;
+}
+#Suggestion_Btn {
+    margin: 20px;
+}
+#profPic {
+    max-width: 30px;
+    height: auto;
+    margin: 10px;
+    position: relative;
+    border-radius: 20px;
+}
+li{
+    margin: 0px;
+}
+.acceptImg{
+    width: 15px;
+    height:15px;
+    margin:5px;
+}
+/* Add Animation */
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+
+@media only screen and (max-width: 770px) {
+    #profPic{
+        display:none;
+    }
+}
+@media only screen and (max-width: 990px) {
+    .note {
+        width: 50px;
+    }
+    .col-sm{
+        width: 5%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    #Options {
+        display: none;
+    }
+    #myotherdiv{
+        display:none;
+    }
+    #mythirddiv{
+        display:none;
+    }
+    #mydiv {
+        width: 100px;
+    }
+}
