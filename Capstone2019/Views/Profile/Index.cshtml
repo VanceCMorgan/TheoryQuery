@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Profile";
 }
-
+<div id="pageContent">
 <h1>Your Profile</h1>
 
 @if (User.Identity.IsAuthenticated)
@@ -65,7 +65,7 @@
         </form>
     </div>
 
-    <div style="position:relative;top:-200px;height:auto;" class="col-5 table-wrapper-scroll-y">
+    <div id="compTable" class="col-5 table-wrapper-scroll-y">
         <table id="usersTable" class="table table-light">
             <thead>
                 <tr>
@@ -88,6 +88,7 @@
         <img onclick="goToComps()" src="~/img/pencil.png" />
     </div>
 
+</div>
 </div>
 <script>
     //pencil image click

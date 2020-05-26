@@ -303,7 +303,7 @@ namespace Capstone2019.Controllers
 
                     _context.CompTags.Add(newCompTag);
                     await _context.SaveChangesAsync();
-                }catch(Exception e)
+                }catch
                 {
                     return RedirectToAction("Songmaker", "Songmaker");
                 }

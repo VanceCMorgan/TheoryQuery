@@ -112,7 +112,6 @@
             window.location.href = '@Url.Action("OpenComp", "Songmaker")?compName=' + stringIn;
         }
 
-
      // When the user clicks on the button, open the modal
     btn.onclick = function () {
         modal.style.display = "block";
@@ -125,11 +124,10 @@
             contentType: "html",
             success: function (result) {
                 if (result.length == 0) {
-                    SetData.append('<tr style="color:red"><td colspan="3">No Matching Compositions</td></tr>')
+                    SetData.append('<tr style="color:red"><td colspan="4">No Matching Compositions</td></tr>')
                 }
                 else {
                     $.each(result, function (index, value) {
-                        var message = "asdasd";
                                 var Data = "<tr>" +
                                     "<td>" + result[index].title + "</td>" +
                                     "<td>" + result[index].date_Created + "</td>" +

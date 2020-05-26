@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "",
+    "appService.defaultWebAppToDeploy": "/subscriptions/3e0627c3-6c07-46c2-a7b8-d281f91a6a3d/resourceGroups/FreeTrial/providers/Microsoft.Web/sites/Capstone"
+}

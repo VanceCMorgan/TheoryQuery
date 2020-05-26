@@ -1,6 +1,10 @@
-﻿body {
-}
-#SignIn_LogOut{
+﻿#SignIn_LogOut{
     position: absolute;
     color: lightblue;
+}
+#pageContent{
+    display: flex;
+}
+.modal-body{ 
+    text-align: center;
 }

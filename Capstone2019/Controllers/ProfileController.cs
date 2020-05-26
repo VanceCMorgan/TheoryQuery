@@ -128,9 +128,9 @@ namespace Capstone2019.Controllers
                 {
                     return RedirectToAction("Index", "Profile", new { error = "Error Updating Profile" });
                 }
-            }catch(Exception e)
+            }catch
             {
-                return RedirectToAction("Index", "Profile", new { error = "Error Updating Profile" });
+                return RedirectToAction("Index", "Profile", new { error = "Error Updating Profile -> "});
             }
             
         }
